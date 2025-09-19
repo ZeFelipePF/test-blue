@@ -116,6 +116,12 @@ DATABASE_URL=postgresql://usuario:senha@localhost:5432/coffee_shop
 python scripts/populate_menu.py
 ```
 
+### 7. Execute os testes unitários
+
+```bash
+python -m pytest tests/unit/ -v
+```
+
 ### 7. Execute a aplicação
 
 ```bash
