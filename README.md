@@ -512,10 +512,6 @@ tests/
 ├── unit/                    # Testes unitários
 │   ├── test_coffee_service.py
 │   └── test_order_service.py
-└── integration/             # Testes de integração
-    ├── test_coffee_endpoints.py
-    ├── test_order_endpoints.py
-    └── test_main_endpoints.py
 ```
 
 ### 🚀 Como Executar os Testes
@@ -535,22 +531,13 @@ tests/
    # Apenas testes unitários
    pytest tests/unit/ -v
    
-   # Apenas testes de integração
-   pytest tests/integration/ -v
-   
    # Com cobertura de código
    pytest tests/ --cov=app --cov-report=term-missing
-   ```
-
-4. **Usar o script personalizado:**
-   ```bash
-   python run_tests.py
    ```
 
 ### 📊 Cobertura de Testes
 
 - **Testes Unitários**: 100% dos serviços (coffee_service, order_service)
-- **Testes de Integração**: 100% dos endpoints da API
 - **Casos de Sucesso**: Todos os cenários funcionais
 - **Casos de Erro**: Validação de dados e tratamento de erros
 - **Database de Teste**: SQLite em memória para isolamento
