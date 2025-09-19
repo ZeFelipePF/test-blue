@@ -60,7 +60,7 @@ API para gerenciamento de pedidos de café desenvolvida com **FastAPI** e **Post
 
 ```bash
 git clone https://github.com/ZeFelipePF/test-blue.git
-cd coffee-shop-api
+cd test-blue
 ```
 
 ### 2. Crie um ambiente virtual
@@ -173,7 +173,7 @@ curl -X GET "http://localhost:8000/health"
 ## 🏗️ Estrutura do Projeto
 
 ```
-coffee-shop-api/
+test-blue/
 ├── app/                          # Aplicação principal
 │   ├── __init__.py
 │   ├── main.py                   # FastAPI app e configuração
