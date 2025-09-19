@@ -29,7 +29,7 @@ class TestOrderService:
         assert order is not None
         assert order.id is not None
         assert order.status == "pending"
-        assert order.total_price == 850  # (2 * 200) + (1 * 450) = 850 centavos
+        assert order.total_price == 8.5  # (2 * 2.00) + (1 * 4.50) = 8.5 reais
         assert len(order.items) == 2
         
         # Verificar itens do pedido
@@ -139,19 +139,19 @@ class TestOrderService:
         db_session.add_all(items)
         db_session.commit()
         
-        # Testar análise de consumo para 1 dia
-        analysis = get_consumption_analysis(db_session, days=1)
+        # Testar análise de consumo para 2 dias (hoje e ontem)
+        analysis = get_consumption_analysis(db_session, days=2)
         
         assert analysis is not None
         assert "total_coffees" in analysis
         assert "total_water_ml" in analysis
         assert "total_milk_ml" in analysis
         assert "total_coffee_grounds_g" in analysis
-        assert "average_daily_consumption" in analysis
-        assert "projected_consumption" in analysis
+        assert "daily_averages" in analysis
         
         # Verificar se os valores estão corretos
-        assert analysis["total_coffees"] == 3  # 2 Expresso + 1 Cappuccino
+        # Apenas pedidos de hoje e ontem devem ser considerados (2 dias)
+        assert analysis["total_coffees"] == 3  # 2 Expresso (hoje) + 1 Cappuccino (ontem)
         assert analysis["total_water_ml"] == 130  # (2 * 50) + (1 * 30)
         assert analysis["total_milk_ml"] == 120  # (2 * 0) + (1 * 120)
         assert analysis["total_coffee_grounds_g"] == 45  # (2 * 15) + (1 * 15)
@@ -165,8 +165,10 @@ class TestOrderService:
         assert analysis["total_water_ml"] == 0
         assert analysis["total_milk_ml"] == 0
         assert analysis["total_coffee_grounds_g"] == 0
-        assert analysis["average_daily_consumption"] == 0
-        assert analysis["projected_consumption"] == 0
+        assert analysis["daily_averages"]["coffees"] == 0
+        assert analysis["daily_averages"]["water_ml"] == 0
+        assert analysis["daily_averages"]["milk_ml"] == 0
+        assert analysis["daily_averages"]["coffee_grounds_g"] == 0
     
     def test_get_consumption_analysis_different_days(self, db_session, sample_coffees):
         """Testa análise de consumo com diferentes períodos"""
@@ -186,9 +188,11 @@ class TestOrderService:
         
         # Testar com 1 dia
         analysis_1_day = get_consumption_analysis(db_session, days=1)
-        assert analysis_1_day["projected_consumption"]["total_coffees"] == 1
+        assert analysis_1_day["total_coffees"] == 1
+        assert analysis_1_day["daily_averages"]["coffees"] == 1
         
         # Testar com 7 dias
         analysis_7_days = get_consumption_analysis(db_session, days=7)
-        assert analysis_7_days["projected_consumption"]["total_coffees"] == 7
+        assert analysis_7_days["total_coffees"] == 1
+        assert analysis_7_days["daily_averages"]["coffees"] == 1/7  # 1 café em 7 dias
 
