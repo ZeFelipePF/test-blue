@@ -122,7 +122,7 @@ python scripts/populate_menu.py
 python -m pytest tests/unit/ -v
 ```
 
-### 7. Execute a aplicação
+### 8. Execute a aplicação
 
 ```bash
 # Desenvolvimento (com reload automático)
